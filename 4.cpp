@@ -4,52 +4,63 @@ struct node{
     int n;
     node * next;
 };
-node * cre(int n)
+node * head;
+void print()
 {
-    node * t = new node;
-    t->n = n;
-    t->next = NULL;
-    return t;
+    node *p = head;
+    cout<<"The current List is:"<<endl;
+    while(p){
+        //cout<<p->n<<(p->next)?' ':'\n';
+        printf("%d%c",p->n,(p->next)?',':'\n');
+        p=p->next;
+    }
+}
+void cre(int n)
+{
+    node *p;
+    head = p = new node;
+    while(n--)
+    {
+        scanf("%d",&p->n);
+        if(n){
+            p->next = new node;
+            p = p->next;
+        }
+        else p->next = NULL;
+    }
+}
+void ssort(int n)
+{
+    node * p,*t,*k;
+    int mini;
+    p = head;
+    while(p->next)
+    {
+        k = p->next;
+        mini = p->n;
+        t = p;
+        while(k){
+            if(k->n < mini){
+                t = k;
+                mini = k->n;
+            }
+            k=k->next;
+        }
+        t->n = p->n;
+        p->n = mini;
+        p = p->next;
+    }
 }
 int main()
 {
-    int k,a;
-    node *h,*p,*t;
-    p = h = NULL;
-    for(int i=0;i<2;++i)
-    {
-        scanf("%d",&k);
-        while(k--)
-        {
-            scanf("%d",&a);
-            p = h;
-            if(h==NULL){
-                h = cre(a);
-                continue;
-            }
-            for(t = p; p && a>=p->n ;t=p,p=p->next);
-            if(p==h)
-            {
-                t = cre(a);
-                t ->next = h;
-                h = t;
-            }
-            else
-            {
-                p = cre(a);
-                p->next = t->next;
-                t->next = p;
-            }
-        }
-    }
-    printf("The current List is:\n");
-    p = h;
-    printf("%d",p->n);
-    p=p->next;
-    while(p){
-        printf(",%d",p->n);
-        p=p->next;
-    }
-    printf("\n");
+    int n;
+    cin>>n;
+    cre(n);
+    ssort(n);
+    print();
     return 0;
 }
+/*
+5
+4 20 12 7 31
+*/
