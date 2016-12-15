@@ -1,66 +1,52 @@
 #include<bits/stdc++.h>
+#include<vector>
 using namespace std;
 struct node{
     int n;
-    node * next;
-};
-node * head;
-void print()
+    node *l,*r;
+}nod[1000],*root;
+int num;
+node *bui()
 {
-    node *p = head;
-    cout<<"The current List is:"<<endl;
-    while(p){
-        //cout<<p->n<<(p->next)?' ':'\n';
-        printf("%d%c",p->n,(p->next)?',':'\n');
-        p=p->next;
+    node *p = NULL;
+    int n;
+    cin>>n;
+    getchar();
+    if(n==-1){
+        return p;
+    }
+    p = &nod[num++];
+    p ->n = n;
+    p->l = bui();
+    p->r = bui();
+    return p;
+}
+vector<int> a;
+void in(node * root)
+{
+    if(root){
+        in(root->l);
+        a.push_back(root->n);
+        in(root->r);
     }
 }
-void cre(int n)
+bool ok()
 {
-    node *p;
-    head = p = new node;
-    while(n--)
-    {
-        scanf("%d",&p->n);
-        if(n){
-            p->next = new node;
-            p = p->next;
-        }
-        else p->next = NULL;
+    int t = a[0];
+    for(int i=1;i<a.size();++i){
+        if(a[i]<t) return 0;
+        t = a[i];
     }
-}
-void ssort(int n)
-{
-    node * p,*t,*k;
-    int mini;
-    p = head;
-    while(p->next)
-    {
-        k = p->next;
-        mini = p->n;
-        t = p;
-        while(k){
-            if(k->n < mini){
-                t = k;
-                mini = k->n;
-            }
-            k=k->next;
-        }
-        t->n = p->n;
-        p->n = mini;
-        p = p->next;
-    }
+    return 1;
 }
 int main()
 {
-    int n;
-    cin>>n;
-    cre(n);
-    ssort(n);
-    print();
+    num = 0;
+    root = bui();
+    a.clear();
+    in(root);
+    if(ok()) puts("YES");
+    else puts("NO");
     return 0;
 }
-/*
-5
-4 20 12 7 31
-*/
+//17,9,-1,-1,22,-1,-1

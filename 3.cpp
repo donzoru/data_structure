@@ -1,50 +1,37 @@
 #include<bits/stdc++.h>
 using namespace std;
-const int M = 100;
-int a[M],b[M];
-void merges(int s,int mid,int e)
+int a[100];
+int n,k,ans;
+void bin_sea(int l,int r)
 {
-    int i=s,j=mid+1,k=s;
-    while(i<=mid && j<=e)
-    {
-        if(a[i]<a[j])
-            b[k++] = a[i++];
-        else
-            b[k++] = a[j++];
+
+    if(ans || l>r) return;
+    int m = l + r >> 1;
+    if(a[m]==k) {
+        ans = m;
+        return;
     }
-    while(i<=mid)
-        b[k++] = a[i++];
-    while(j<=e)
-        b[k++] = a[j++];
-}
-void bac(int s,int e)
-{
-    for(int i=s;i<=e;++i)
-        a[i] = b[i];
-}
-void divi(int s,int e)
-{
-    if(s<e){
-        int mid = (s+e)/2;
-        divi(s,mid);
-        divi(mid+1,e);
-        merges(s,mid,e);
-        bac(s,e);
-    }
+    if(l==r) return;
+    bin_sea(l,m-1);
+    bin_sea(m+1,r);
 }
 int main()
 {
-    char c;
-    int t = 0,k = 0;
-    while((c=getchar())!='\n'){
-        if(isblank(c)) {
-            a[k++] = t;
-            t = 0;continue;
-        }else t = t*10 +c-'0';
-    }
-    a[k++] = t;
-    divi(0,k-1);
-    for(t=0;t<k;++t)
-        printf("%d%c",a[t],t==k?'\n':' ');
+    cin>>n;
+    for(int i=1;i<=n;++i)
+        cin>>a[i];
+    cin>>k;
+    ans = 0;
+    bin_sea(1,n);
+    if(ans) cout<<ans<<endl;
+    else cout<<0<<endl;
     return 0;
 }
+/*
+5
+33 29 25 20 12
+29
+9
+33 29 20 12 9 8 7 2 0
+100
+*/
